@@ -2,6 +2,19 @@ document.getElementById("upload-button").addEventListener("click", function() {
     document.getElementById("file-upload").click();
 });
 
+document.getElementById("url-button").addEventListener("click", function() {
+    document.getElementById("video-url").style.display = "block";
+    document.getElementById("video-url").focus(); // Focus no campo de URL
+});
+
+document.getElementById("video-url").addEventListener("input", function() {
+    const videoUrl = this.value;
+    if (videoUrl) {
+        // Carregar o vídeo da URL
+        loadVideoFromUrl(videoUrl);
+    }
+});
+
 document.getElementById("file-upload").addEventListener("change", function() {
     // Lógica para lidar com a seleção de arquivo
     const fileInput = document.getElementById("file-upload");
@@ -18,6 +31,13 @@ document.getElementById("file-upload").addEventListener("change", function() {
 function loadOriginalVideo(videoFile) {
     const originalVideo = document.getElementById("original-video");
     originalVideo.src = URL.createObjectURL(videoFile);
+    document.getElementById("video-container").style.display = "block";
+}
+
+function loadVideoFromUrl(videoUrl) {
+    // Definir a fonte do vídeo para a URL fornecida
+    const originalVideo = document.getElementById("original-video");
+    originalVideo.src = videoUrl;
     document.getElementById("video-container").style.display = "block";
 }
 
