@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor de Vídeo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Conversor de Vídeo</h1>
+        <div>
+            <button id="upload-button" class="button upload-button">Upload de Vídeo</button>
+            <input type="file" id="file-upload" accept="video/*" style="display: none;">
+            <input type="text" id="video-url" placeholder="Cole a URL do vídeo" style="display: none;">
+            <button id="url-button" class="button">Upload via URL</button>
+        </div>
+        <div id="video-container" style="display: none;">
+            <h2>Vídeo Original</h2>
+            <video id="original-video" controls autoplay></video>
+        </div>
+        <button id="convert-button" class="button">Converter</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
