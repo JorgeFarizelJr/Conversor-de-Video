@@ -10,18 +10,13 @@ document.getElementById("url-button").addEventListener("click", function() {
 document.getElementById("video-url").addEventListener("input", function() {
     const videoUrl = this.value;
     if (videoUrl) {
-        // Carregar o vídeo da URL
         loadVideoFromUrl(videoUrl);
     }
 });
 
 document.getElementById("file-upload").addEventListener("change", function() {
-    // Lógica para lidar com a seleção de arquivo
-    const fileInput = document.getElementById("file-upload");
-    const videoFile = fileInput.files[0];
+    const videoFile = this.files[0];
     if (videoFile) {
-        console.log("Arquivo selecionado:", videoFile.name);
-        // Carregar o vídeo selecionado, se necessário
         loadOriginalVideo(videoFile);
     } else {
         console.log("Nenhum arquivo selecionado.");
@@ -35,17 +30,42 @@ function loadOriginalVideo(videoFile) {
 }
 
 function loadVideoFromUrl(videoUrl) {
-    // Definir a fonte do vídeo para a URL fornecida
     const originalVideo = document.getElementById("original-video");
     originalVideo.src = videoUrl;
     document.getElementById("video-container").style.display = "block";
 }
 
 document.getElementById("convert-button").addEventListener("click", function() {
-    // Lógica para converter o vídeo
-    // Exemplo: Simulando uma conversão com um tempo de espera de 3 segundos
-    setTimeout(function() {
-        console.log("Vídeo convertido!");
-        // Exibir ou fazer o download do vídeo convertido, conforme necessário
-    }, 3000);
+    const videoFile = document.getElementById("file-upload").files[0];
+    if (!videoFile) {
+        alert("Por favor, selecione um vídeo primeiro.");
+        return;
+    }
+    
+    const formData = new FormData();
+    formData.append("video", videoFile);
+
+    fetch("/videos/upload", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data.message);
+        fetch("/videos/convert", {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ inputFile: videoFile.name })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.outputFile) {
+                const downloadLink = document.getElementById("download-link");
+                downloadLink.href = `/videos/download/${data.outputFile}`;
+                downloadLink.style.display = "block";
+            }
+        })
+        .catch(error => console.error('Erro ao converter o vídeo:', error));
+    })
+    .catch(error => console.error('Erro ao fazer upload do vídeo:', error));
 });

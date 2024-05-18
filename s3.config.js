@@ -1,4 +1,3 @@
-// s3.config.js
 const { S3Client } = require("@aws-sdk/client-s3");
 const { fromIni } = require("@aws-sdk/credential-provider-ini");
 
